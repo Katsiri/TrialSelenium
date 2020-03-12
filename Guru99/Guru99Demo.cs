@@ -215,16 +215,25 @@ namespace Guru99
 
             //                                             /html/body/form/div[4]/div/div/main/div[3]/div/table/tbody/tr[1]
             int rowcount = m_driver.FindElements(By.XPath("/html/body/form/div[4]/div/div/main/div[3]/div/table/tbody/tr")).Count();
-            
 
-            
+
+            bool isCorrect = false;
             IWebElement tableElement = m_driver.FindElement(By.XPath("/html/body/form/div[4]/div/div/main/div[3]/div/table/tbody"));
             IList<IWebElement> tableRow = tableElement.FindElements(By.TagName("tr"));
             IList<IWebElement> rowTD;
             foreach (IWebElement row in tableRow)
             {
                 rowTD = row.FindElements(By.TagName("td"));
-                TestContext.WriteLine("rowTD[1] - " + rowTD[1].Text);
+                TestContext.WriteLine("rowTD[0] - " + rowTD[0].Text);
+                if (rowTD[0].Text.Contains("In-Ear Audio"))
+                {
+                    isCorrect = true;
+                }
+                else
+                {
+                    isCorrect = false;
+                    break;
+                }
                 //if (rowTD.Count > 9)
                 //{
                 //    if (rowTD[8].Text.Equals("Suspended") && rowTD[10].Text.Equals("Publishing Failed");
@@ -245,7 +254,7 @@ namespace Guru99
             //System.out.println("No of rows are : " + rows.size());
 
             //System.Diagnostics.Debug.WriteLine("test out Debug");
-            Assert.That(rowcount == 4);
+            Assert.That(rowcount == 4 & isCorrect);
             TestContext.WriteLine("TestContext Message..." + rowcount);
 
             //m_driver.Close();
